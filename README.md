@@ -9,3 +9,5 @@ Proyecto de demostración para el curso **Github Actions**
 - .NET 10 Web API
 - C# 13
 - Git, Github
+
+En desarrollo activo.
