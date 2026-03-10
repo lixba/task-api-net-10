@@ -33,7 +33,7 @@ jobs:
     steps:
       - name: Mensaje Inicial
         run: echo "Iniciando workflow de CI"
-        
+
       - name: Checkout del código
         uses: actions/checkout@v4
 
