@@ -1,57 +1,50 @@
 name: Build
-
 on:
   pull_request:
     branches:
       - main
 
-  # para ejecutar manual desde interfaz de github
-  workflow_dispatch:
+  workflow_dispatch: # Permite ejecución manual
     inputs:
       build_configuration:
-        description: 'Configuración de build (debbug o release)'
+        description: "Build Configuration (Debug or Release)"
         required: false
-        default: 'Release'
+        default: "Release"
         type: choice
         options:
-          - Debbug
+          - Debug
           - Release
-      log_level: 
-        description: 'Dotnet verbosity level'
+      log_level:
+        description: "dotnet verbosity level"
         required: false
-        default: 'normal'
+        default: "normal"
         type: choice
         options:
           - quiet
           - minimal
           - normal
           - detailed
-
 env:
-  DOTNET_VERSION: '10.0.103'
-  BUILD_CONFIGURATION: 'Release'
-
+  DOTNET_VERSION: "10.0.103"
+  BUILD_CONFIGURATION: "Release"
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Mensaje inicial
-        run: echo "Iniciando workflows de CI"
-
+      - name: Mensaje Inicial
+        run: echo "Iniciando workflow de CI"
       - name: Checkout del código
         uses: actions/checkout@v4
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: ${{env.DOTNET_VERSION}}
 
-      - name: Restore dependencies
-        run: dotnet restore src/Api/Api.csproj --verbosity ${{inputs.log_level || 'normal'}} 
+      - name: Restore Dependencies
+        run: dotnet restore src/Api/Api.csproj --verbosity ${{inputs.log_level || 'normal'}}
 
       - name: Build del proyecto
         run: |
-          CONFIG = ${{ inputs.build_configuration || 'Release' }}
+          CONFIG=${{inputs.build_configuration || 'Release' }}
           echo "Build with configuration: $CONFIG"
           dotnet build src/Api/Api.csproj --configuration $CONFIG --no-restore
